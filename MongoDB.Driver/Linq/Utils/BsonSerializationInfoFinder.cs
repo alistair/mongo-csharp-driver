@@ -285,6 +285,14 @@ namespace MongoDB.Driver.Linq.Utils
             return null;
         }
 
+		protected override BsonSerializationInfo VisitConditional(ConditionalExpression node)
+		{
+			var b = this.Visit(node.IfTrue);
+			var c = this.Visit(node.IfFalse);
+
+			return b ?? c;
+		}
+
         private BsonSerializationInfo VisitElementAt(MethodCallExpression node)
         {
             if (node.Method.DeclaringType != typeof(Enumerable) && node.Method.DeclaringType != typeof(Queryable))
